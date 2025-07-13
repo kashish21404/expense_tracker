@@ -18,7 +18,7 @@ const App=()=>{
         <Routes>
           <Route path='/' element={<Root />}/>
           <Route path='/login' exact element={<Login />}/>
-          <Route path='/signUp' exact element={<SignUp />}/>
+          <Route path='/signup' exact element={<SignUp />}/>
           <Route path='/dashboard' exact element={<Home />}/>
           <Route path='/Income' exact element={<Income />}/>
           <Route path='/Expense' exact element={<Expense />}/>

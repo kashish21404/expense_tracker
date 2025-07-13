@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import AuthLayout from '../../components/layouts/AuthLayout';
 import { useNavigate } from 'react-router-dom';
+import Input from "../../components/Inputs/Input";
+import { Link } from 'react-router-dom';
+import { validateEmail } from '../../utils/helper';
 
 const Login = () => {
   const [email,setEmail]=useState("");
@@ -9,8 +12,28 @@ const Login = () => {
 
   const naviagte=useNavigate();
 
-  //Handle logic
-  
+  //Handle login formsubmit
+  const handleLogin=async(e)=>{
+    e.preventDefault();
+
+    if(!validateEmail(email))
+    {
+      setError("PLease enter a valid email address");
+      return ;
+    }
+
+    if(!password)
+    {
+      setError("please enter the password");
+      return;
+    }
+    setError('');
+
+    //login API CALL
+
+
+  }
+
   return (
     <AuthLayout>
     <div className="lg:w-[70%] h-3/4 md:h-full flex flex-col justify-center">
@@ -26,8 +49,27 @@ const Login = () => {
         label="Email Address"
         placeholder="example@example.com"
         type="text" />
+
+         <Input 
+        value={password}
+        onChange={({target})=>setPassword(target.value)}
+        label="Password"
+        placeholder="Min 8 characters"
+        type="password" />
+
+      {error && <p className='text-red-500 text-xs pb-2.5'>{error}</p>}
+
+      <button type="submit" className="btn-primary">
+        LOGIN
+      </button>
       </form>
 
+      <p className="text-[13px] text-slate-800 mt-3">
+        Don't have an account?{" "}
+        <Link className="font-medium text-primary underline" to="/signup">
+          SignUp
+        </Link>
+      </p>
     </div>
     </AuthLayout>
   );
