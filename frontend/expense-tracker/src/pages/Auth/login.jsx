@@ -62,7 +62,6 @@ const Login = () => {
       <button type="submit" className="btn-primary">
         LOGIN
       </button>
-      </form>
 
       <p className="text-[13px] text-slate-800 mt-3">
         Don't have an account?{" "}
@@ -70,6 +69,7 @@ const Login = () => {
           SignUp
         </Link>
       </p>
+      </form>
     </div>
     </AuthLayout>
   );
