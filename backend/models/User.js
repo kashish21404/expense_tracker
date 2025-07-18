@@ -1,10 +1,10 @@
 const mongoose=require("mongoose");
 
-const bcrpt=require("bcryptjs");
+const bcrypt=require("bcryptjs");
 
 const UserSchema=new mongoose.Schema(
     {
-        fullname:{type:String,required:true},
+        fullName:{type:String,required:true},
         email:{type:String,required:true,unique:true},
         password:{type:String,required:true},
         profileImageUrl:{type:String,default:null},
@@ -16,12 +16,12 @@ const UserSchema=new mongoose.Schema(
 
 UserSchema.pre("save",async function(next){
     if(!this.isModified("password")) return next();
-    this.password=await bycrypt.hash(this.password,10);
+    this.password=await bcrypt.hash(this.password,10);
     next();
 });
 
 UserSchema.methods.comparePassword=async function(condidatePassword){
-    return await bycrypt.compare(candidatePassword,this.password);
+    return await bcrypt.compare(condidatePassword,this.password);
 }
 
 module.exports=mongoose.model("User",UserSchema);
