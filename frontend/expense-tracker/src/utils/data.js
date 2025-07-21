@@ -30,4 +30,4 @@ export const SIDE_MENU_DATA=[
         icon:LuLogOut,
         path:"logout",
     }
-]
+];
