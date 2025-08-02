@@ -1,41 +1,46 @@
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/userContext"
-import { useEffect } from "react";
+import { useEffect, useState, useContext } from "react";
 import axiosInstance from "../utils/axiosInstance";
 import { API_PATHS } from "../utils/apiPaths";
-import { useContext } from "react";
 
-export const useUserAuth=()=>{
-    const {user,updateUser,clearUser}=useContext(UserContext);
-    const navigate=useNavigate();
+export const useUserAuth = () => {
+    const { user, updateUser, clearUser } = useContext(UserContext);
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
-    useEffect(()=>{
-        if(user) return;
+    useEffect(() => {
+        if (user) {
+            setLoading(false);
+            return;
+        }
 
-        let isMounted=true;
+        let isMounted = true;
 
-        const fetchUserInfo=async ()=>{
-            try{
-                const response=await axiosInstance.get(API_PATHS.AUTH.GET_USER_INFO);
+        const fetchUserInfo = async () => {
+            try {
+                const response = await axiosInstance.get(API_PATHS.AUTH.GET_USER_INFO);
 
-                if(isMounted && response.data)
-                {
+                if (isMounted && response.data) {
                     updateUser(response.data);
                 }
-            } catch(error)
-            {
-                console.log.error("Failed to fetch user info:",error);
-                if(isMounted){
+            } catch (error) {
+                console.error("Failed to fetch user info:", error);
+                if (isMounted) {
                     clearUser();
                     navigate("/login");
                 }
+            } finally {
+                if (isMounted) setLoading(false);
             }
         };
 
         fetchUserInfo();
 
-        return ()=>{
-            isMounted=false;
+        return () => {
+            isMounted = false;
         };
-    },[updateUser,clearUser,navigate]);
+    }, [user, updateUser, clearUser, navigate]);
+
+    return { user, loading };
 };
